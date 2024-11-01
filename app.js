@@ -16,11 +16,12 @@ app.use(express.json());
 
 
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: ['http://localhost:5173', 'https://frontacortador.onrender.com'],
     methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'PATCH', 'DELETE'],
     allowedHeaders: ['X-Requested-With', 'Content-Type'],
     credentials: true,
 }));
+
 
 app.use("/", cutRoute);
 app.use("/", redirectRouter);
