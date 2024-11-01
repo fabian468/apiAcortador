@@ -1,9 +1,10 @@
 import urls from '../models/urls.js';
+import bcrypt from 'bcrypt'
 
 export const redirect = async (req, res) => {
   const codeRegex = /^([a-z0-9]){5}$/;
   const { code } = req.params;
-  const { password } = req.body;
+  const password = req.query.password;
   //const ip = req.ip;
 
   if (!codeRegex.test(code)) {
@@ -16,7 +17,6 @@ export const redirect = async (req, res) => {
 
     } else {
 
-
       if (linkObj.expiresAt && new Date() > linkObj.expiresAt) {
         return res.status(410).json({ message: 'La URL ha expirado' });
       }
@@ -26,7 +26,9 @@ export const redirect = async (req, res) => {
       }
 
 
-      if (linkObj.passwordUrl && password) {
+
+      if (linkObj.passwordUrl) {
+        if (!password) return res.status(401).json({ message: 'Se necesita contraseña' });
         const isPasswordCorrect = await bcrypt.compare(password, linkObj.passwordUrl);
         if (!isPasswordCorrect) {
           return res.status(401).json({ message: 'Contraseña incorrecta' });
@@ -42,3 +44,5 @@ export const redirect = async (req, res) => {
     }
   }
 };
+
+
