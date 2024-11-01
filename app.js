@@ -8,19 +8,21 @@ import redirectRouter from "./src/routes/redirectRouter.js";
 import dotenv from 'dotenv';
 
 
+
+
 dotenv.config();
 const app = express();
-const port = 3000 || process.env.PORT;
-
-app.use(express.json());
-
+const port = process.env.PORT || 3000;
 
 app.use(cors({
-    origin: ['http://localhost:5173/', 'https://frontacortador.onrender.com'],
+    origin: ['http://localhost:5173', 'https://frontacortador.onrender.com'],
     methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'PATCH', 'DELETE'],
     allowedHeaders: ['X-Requested-With', 'Content-Type'],
     credentials: true,
 }));
+
+
+app.use(express.json());
 
 
 app.use("/", cutRoute);
